@@ -20,3 +20,19 @@ chart1 = alt.Chart(top10).mark_bar().encode(
 ).properties(height=350)
 
 st.altair_chart(chart1, use_container_width=True)
+
+
+st.header("License Status by License Type")
+
+data2 = df[df["License Type"].isin(top10["License Type"])]
+
+status = data2.groupby(["License Type", "License Status"]).size().reset_index(name="Count")
+
+chart2 = alt.Chart(status).mark_rect().encode(
+    x=alt.X("License Status:N", title="License Status"),
+    y=alt.Y("License Type:N", title="License Type"),
+    color=alt.Color("Count:Q", title="Number of Licenses"),
+    tooltip=["License Type:N", "License Status:N", "Count:Q"]
+).properties(height=350)
+
+st.altair_chart(chart2, use_container_width=True)
